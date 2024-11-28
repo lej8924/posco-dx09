@@ -7,7 +7,8 @@
 		<artifactId>java-study</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>network</artifactId>
+	<artifactId>chapter04</artifactId>
+	
 	<properties>
 		<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
 		<maven.compiler.source>17</maven.compiler.source>
@@ -18,6 +19,6 @@
 	</dependencies>
 
 	<build>
-		<finalName>network</finalName>
+		<finalName>chapter04</finalName>
 	</build>	
 </project>
