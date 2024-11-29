@@ -1,16 +1,13 @@
 package httpd;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.file.Files;
 
 public class RequestHandler extends Thread {
 	private Socket socket;
+	private final String DOCUMENT_ROOT = "./webapp";
 
 	public RequestHandler(Socket socket) {
 		this.socket = socket;
@@ -87,14 +84,7 @@ public class RequestHandler extends Thread {
 		File file = new File("./network/webapp" + url);
 		if(!file.exists()) {
 			// 404 response
-			File file2 = new File("./network/webapp/error/404.html");
-			byte[] body2 = Files.readAllBytes(file.toPath());
-			String contentType = Files.probeContentType(file.toPath());
-
-			os.write("HTTP/1.1 200 OK\n".getBytes("UTF-8"));
-			os.write(("Content-Type:" + contentType + "; charset=utf-8\n").getBytes("UTF-8"));
-			os.write("\n".getBytes());
-			os.write(body2);
+			response404Error(os,protocol);
 			return;
 		}
 		
@@ -103,6 +93,18 @@ public class RequestHandler extends Thread {
 		String contentType = Files.probeContentType(file.toPath());
 		
 		os.write("HTTP/1.1 200 OK\n".getBytes("UTF-8"));
+		os.write(("Content-Type:" + contentType + "; charset=utf-8\n").getBytes("UTF-8"));
+		os.write("\n".getBytes());
+		os.write(body);
+	}
+
+	public void response404Error(OutputStream os,String protocol) throws IOException{
+		 // Http/1.1 404 File Not Found\n
+		File file = new File("./network/webapp/error/404.html");
+		byte[] body = Files.readAllBytes(file.toPath());
+		String contentType = Files.probeContentType(file.toPath());
+
+		os.write("HTTP/1.1 404 File Not Found\n".getBytes("UTF-8"));
 		os.write(("Content-Type:" + contentType + "; charset=utf-8\n").getBytes("UTF-8"));
 		os.write("\n".getBytes());
 		os.write(body);
