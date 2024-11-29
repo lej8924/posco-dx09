@@ -57,10 +57,10 @@ public class RequestHandler extends Thread {
 			
 			// 예제 응답입니다.
 			// 서버 시작과 테스트를 마친 후, 주석 처리 합니다.
-			// outputStream.write("HTTP/1.1 200 OK\n".getBytes("UTF-8"));
-			// outputStream.write("Content-Type:text/html; charset=utf-8\n".getBytes("UTF-8"));
-			// outputStream.write("\n".getBytes());
-			// outputStream.write("<h1>이 페이지가 잘 보이면 실습과제 SimpleHttpServer를 시작할 준비가 된 것입니다.</h1>".getBytes("UTF-8"));
+//			 outputStream.write("HTTP/1.1 200 OK\n".getBytes("UTF-8"));
+//			 outputStream.write("Content-Type:text/html; charset=utf-8\n".getBytes("UTF-8"));
+//			 outputStream.write("\n".getBytes());
+//			 outputStream.write("<h1>이 페이지가 잘 보이면 실습과제 SimpleHttpServer를 시작할 준비가 된 것입니다.</h1>".getBytes("UTF-8"));
 
 		} catch (Exception ex) {
 			consoleLog("error:" + ex);
@@ -81,10 +81,20 @@ public class RequestHandler extends Thread {
 		if("/".equals(url)) {
 			url = "/index.html";
 		}
-		
-		File file = new File("./webapp" + url);
+		System.out.println("Current working directory: " + System.getProperty("user.dir"));
+
+
+		File file = new File("./network/webapp" + url);
 		if(!file.exists()) {
 			// 404 response
+			File file2 = new File("./network/webapp/error/404.html");
+			byte[] body2 = Files.readAllBytes(file.toPath());
+			String contentType = Files.probeContentType(file.toPath());
+
+			os.write("HTTP/1.1 200 OK\n".getBytes("UTF-8"));
+			os.write(("Content-Type:" + contentType + "; charset=utf-8\n").getBytes("UTF-8"));
+			os.write("\n".getBytes());
+			os.write(body2);
 			return;
 		}
 		
