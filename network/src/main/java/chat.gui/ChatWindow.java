@@ -49,16 +49,9 @@ public class ChatWindow {
 		textField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// 엔터키가 눌렸을 때
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					// 텍스트 필드에서 입력된 메시지 가져오기
-					String message = textField.getText();
-
-					// 메시지가 비어 있지 않다면
-					if (!message.trim().isEmpty()) {
-						// 메시지 보내기
-						sendMessage();
-					}
+				char keyChar = e.getKeyChar();
+				if(keyChar == KeyEvent.VK_ENTER) {
+					sendMessage();
 				}
 			}
 		});
